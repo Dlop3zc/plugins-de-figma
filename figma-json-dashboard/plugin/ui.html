@@ -108,6 +108,12 @@
       <input id="proxyUrl" type="text" value="http://localhost:5000/api/proxy" />
       <label for="timeout">Timeout (segundos)</label>
       <input id="timeout" type="number" min="1" max="120" value="15" />
+      <label for="authUser">Usuario (autenticación básica, opcional)</label>
+      <input id="authUser" type="text" autocomplete="off" />
+      <label for="authPass">Contraseña</label>
+      <input id="authPass" type="password" autocomplete="off" />
+      <label for="headers">Encabezados extra (JSON, opcional)</label>
+      <textarea id="headers" placeholder='{"Authorization": "Bearer …", "Cookie": "JSESSIONID=…"}'></textarea>
       <button type="button" id="health" class="secondary">Probar conexión con el proxy</button>
     </details>
 
@@ -174,6 +180,28 @@
           return;
         }
       }
+
+      const headers = {};
+      if ($('headers').value.trim()) {
+        let extra;
+        try {
+          extra = JSON.parse($('headers').value);
+        } catch (err) {
+          setStatus('Los encabezados no son JSON válido: ' + err.message, 'error');
+          return;
+        }
+        if (!extra || typeof extra !== 'object' || Array.isArray(extra)) {
+          setStatus('Los encabezados deben ser un objeto JSON, por ejemplo {"Authorization": "…"}', 'error');
+          return;
+        }
+        Object.assign(headers, extra);
+      }
+      const user = $('authUser').value;
+      if (user) {
+        const raw = new TextEncoder().encode(user + ':' + $('authPass').value);
+        headers.Authorization = 'Basic ' + btoa(String.fromCharCode(...raw));
+      }
+      if (Object.keys(headers).length) payload.headers = headers;
 
       submitBtn.disabled = true;
       setStatus('Consultando ' + targetUrl + ' …');
