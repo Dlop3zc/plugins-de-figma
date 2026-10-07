@@ -71,5 +71,6 @@ Límites ajustables en `CONFIG` al inicio de `code.js`.
 - **`UPSTREAM_UNREACHABLE` / `UPSTREAM_TIMEOUT`**: tu equipo no ve la IP interna (VPN, firewall, IP o puerto incorrectos).
   Comprueba con `curl http://192.168.28.130/...` desde la misma máquina.
 - **`TARGET_NOT_ALLOWED`**: el host destino resuelve a una IP pública; añádela a `PROXY_ALLOWED_NETWORKS`.
+- **`UPSTREAM_HTTP_ERROR` con HTTP 401/403**: el servicio pide credenciales. En **Configuración avanzada** llena usuario y contraseña (autenticación básica) o pega en **Encabezados extra** el `Authorization` o `Cookie` que envía el navegador (DevTools → Network → la petición → Request Headers).
 - **`NOT_JSON`**: el servlet devolvió HTML (página de login, error de Tomcat…); revisa el campo `preview`.
 - El proxy ignora `HTTP_PROXY`/`HTTPS_PROXY` del sistema para que las IPs internas se consulten directamente.
