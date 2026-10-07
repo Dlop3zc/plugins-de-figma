@@ -8,7 +8,7 @@
   "documentAccess": "dynamic-page",
   "networkAccess": {
     "allowedDomains": ["none"],
-    "devAllowedDomains": ["http://localhost:5000", "http://127.0.0.1:5000"],
+    "devAllowedDomains": ["http://localhost:5000"],
     "reasoning": "El plugin solo se comunica con un proxy local que reenvía peticiones a servidores internos de prueba."
   }
 }
